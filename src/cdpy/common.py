@@ -189,7 +189,8 @@ class CdpcliWrapper(object):
             'RUNNING',
             'installation:finished',  # ML
             'Running',  # DW
-            'GOOD_HEALTH'  # DF
+            'GOOD_HEALTH',  # DF
+            'ClusterCreationCompleted' #DE
         ]
 
         self.STOPPED_STATES = [
@@ -198,7 +199,8 @@ class CdpcliWrapper(object):
             'STOPPED',
             'ENV_STOPPED',
             'Stopped', # DW
-            'NOT_ENABLED'  # DF
+            'NOT_ENABLED',  # DF
+            'ClusterDeletionCompleted' # DE
         ]
 
         self.FAILED_STATES = [
@@ -221,6 +223,7 @@ class CdpcliWrapper(object):
             'installation:failed', 'deprovision:failed', 'installation:finished',  # ML
             'Error', 'Running', 'Stopped', 'Deleting',  # DW
             'GOOD_HEALTH', 'CONCERNING_HEALTH', 'BAD_HEALTH',  # DF
+            'ClusterCreationCompleted', 'ClusterUpdateInProgress' # DE
         ]
 
         # common regex patterns
@@ -413,9 +416,9 @@ class CdpcliWrapper(object):
                     current_status = self._get_path(current, field)
                 else:  # field not provided, therefore seek default status fields to check for failures
                     default_status_fields = [
-                        ['status'],  # Datalake, DW, OpDB, Datahub
+                        ['status'],  # Datalake, DW, OpDB, Datahub, DE
                         ['instanceStatus'],   # ML
-                        ['status', 'state'],  # DF
+                        ['status', 'state'],  # DF, DE
                     ]
                     possible_status = [
                         self._get_path(current, x) for x in default_status_fields
